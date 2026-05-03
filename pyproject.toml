@@ -1,0 +1,45 @@
+[project]
+name = "govuk-search-mcp"
+version = "0.1.0"
+description = "MCP for searching gov.uk"
+readme = "README.md"
+authors = [
+    { name = "Joe Early", email = "7620667+JAEarly@users.noreply.github.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "requests>=2.33.1",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "ruff>=0.12.10",
+    "types-requests>=2.33.0.20260503",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.6,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "D",   # pydocstyle
+    "I",   # isort
+]
+extend-select = [
+    "D213",  # summary on second line (after opening """)
+]
+ignore = [
+    "D100",  # Missing docstring in public module
+    "D101",  # Missing docstring in public class
+    "D104",  # Missing docstring in public package
+    "D212",  # conflicts with D213
+]
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
