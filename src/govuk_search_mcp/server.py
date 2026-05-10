@@ -73,7 +73,3 @@ def latest_gov_uk(
 
 
 # TODO(jearly): Add icons and/or prompts?
-
-
-if __name__ == "__main__":
-    mcp.run(transport="streamable-http")

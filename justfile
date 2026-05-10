@@ -15,7 +15,7 @@ test_int:
     uv run pytest test/integration
 
 run_server:
-     uv run --with mcp src/govuk_search_mcp/server.py
+     uv run src/govuk_search_mcp/__main__.py
 
 run_inspector:
     npx -y @modelcontextprotocol/inspector --server-url http://localhost:8000/mcp
