@@ -1,4 +1,4 @@
-# govuk-search-mcp
+# GOV.UK Search MCP Server
 
 MCP server for searching [GOV.UK](https://www.gov.uk). Exposes two tools:
 
