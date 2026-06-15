@@ -1,62 +1,68 @@
 # GOV.UK Search MCP Server
 
-MCP server for searching [GOV.UK](https://www.gov.uk). Exposes two tools:
+MCP server for searching [GOV.UK](https://www.gov.uk). Exposes three tools:
 
 - **`search_gov_uk`** — keyword search ranked by relevance
 - **`latest_gov_uk`** — most recent publications, newest first
+- **`fetch_gov_uk_page`** — fetches the content and attachments on a specific gov UK page
 
 Uses the [GOV.UK Search API](https://github.com/alphagov/search-api/blob/main/docs/using-the-search-api.md).  
 The server runs over streamable-http.
 
-## Installation
+## Usage (Deployed)
+
+### Installation
+
+Install with `pip`:
 
 ```bash
 pip install govuk-search-mcp
 ```
 
-Or with `uv`:
+or with `uv`:
 
 ```bash
 uv add govuk-search-mcp
 ```
 
-No install needed with `uvx` — see usage below.
+or skip installation and use `uvx` (see below).
 
-## Usage
+### Run Server
 
-The server runs over streamable-http. Start it first:
+The server runs over streamable-http.
+
+If installed via pip/uv:
 
 ```bash
-uvx govuk-search-mcp
-# or, if installed via pip/uv:
 govuk-search-mcp
 ```
 
-By default it listens on `http://127.0.0.1:8000/mcp`. Override with env vars:
+Or if using `uvx`:
+
+```bash
+uvx govuk-search-mcp
+```
+
+By default the server listens on `http://127.0.0.1:8000/mcp`. Override with env vars:
 
 | Variable       | Default     | Description  |
 | -------------- | ----------- | ------------ |
 | `FASTMCP_HOST` | `127.0.0.1` | Bind address |
 | `FASTMCP_PORT` | `8000`      | Port         |
 
-### Claude Desktop
+## Usage (Local)
 
-Add to `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "gov-uk": {
-      "url": "http://localhost:8000/mcp"
-    }
-  }
-}
-```
-
-### Claude Code
+If running locally, use just commands to run local code version (not release version).
 
 ```bash
-claude mcp add --transport http gov-uk-search http://localhost:8000/mcp
+# Start server using local code
+just run_server
+# Start inspector to manually test
+just run_inspector
+# Attach to claude code
+just attach_claude
+# Detach from calude code
+just detach_claude
 ```
 
 ## Tools

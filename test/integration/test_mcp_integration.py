@@ -124,3 +124,29 @@ async def test__latest_gov_uk__date_to(session):
     cutoff = _parse_ts(f"{date_to}T23:59:59Z")
     for result in response["results"]:
         assert _parse_ts(result["timestamp"]) <= cutoff
+
+
+@pytest.mark.anyio
+async def test__fetch_gov_uk_page__news_page(session):
+    url = "https://www.gov.uk/government/news/children-and-parents-to-pilot-social-media-bans-time-limits-and-curfews-at-home-as-government-tests-next-steps-to-give-uk-kids-their-childhood-back"
+    response = await _call(session, "fetch_gov_uk_page", url=url)
+    assert response["title"] != ""
+    assert response["body"] != ""
+    assert response["attachments"] == []
+
+
+@pytest.mark.anyio
+async def test__fetch_gov_uk_page__publication_with_attachments(session):
+    url = "https://www.gov.uk/government/publications/ai-opportunities-action-plan-government-response"
+    response = await _call(session, "fetch_gov_uk_page", url=url)
+    assert response["title"] != ""
+    assert response["body"] != ""
+    assert len(response["attachments"]) > 0
+    attachment_types = {a["attachment_type"] for a in response["attachments"]}
+    assert "file" in attachment_types
+
+
+@pytest.mark.anyio
+async def test__fetch_gov_uk_page__invalid_url_raises(session):
+    result = await session.call_tool("fetch_gov_uk_page", arguments={"url": "https://example.com/foo"})
+    assert result.isError

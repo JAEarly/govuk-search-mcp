@@ -219,9 +219,9 @@ def _parse_results(data: dict[str, Any], params: SearchParams) -> GovUKSearchRes
         orgs = []
         for o in r["organisations"]:
             org = GovUKOrganisation(
-                title=o["title"],
-                slug=o["slug"],
-                parents=o["parent_organisations"],
+                title=o.get("title", "Missing Title"),
+                slug=o.get("slug", "Missing Slug"),
+                parents=o.get("parent_organisations", "Missing Parents"),
             )
             orgs.append(org)
         result = GovUKSearchResult(
