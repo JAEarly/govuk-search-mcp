@@ -1,6 +1,7 @@
 from mcp.server.fastmcp import FastMCP
 from requests import HTTPError
 
+from govuk_search_mcp.content import GovUKPageContent, run_gov_uk_page_fetch
 from govuk_search_mcp.search import GovUKSearchResponse, run_gov_uk_search
 
 mcp = FastMCP("GovUK Search", stateless_http=True, json_response=True)
@@ -70,6 +71,29 @@ def latest_gov_uk(
         )
     except HTTPError as e:
         raise ValueError(f"GOV.UK Search API error: {e.response.status_code} {e.response.reason}")
+
+
+@mcp.tool()
+def fetch_gov_uk_page(url: str, plain_text: bool = False) -> GovUKPageContent:
+    """
+    Fetch the full content of a GOV.UK page, including body text and attachment metadata.
+
+    Use this to read the body of a GOV.UK page returned by search_gov_uk or latest_gov_uk,
+    and to discover any attached documents (HTML or PDF) linked from that page.
+
+    Args:
+        url: Full GOV.UK URL (e.g. https://www.gov.uk/guidance/foo) or bare path (/guidance/foo).
+        plain_text: If True, strip HTML tags from the body and return plain text instead of HTML.
+
+    Returns:
+        Page content including body text, document type, and list of attachments with URLs.
+    """
+    try:
+        return run_gov_uk_page_fetch(url, plain_text=plain_text)
+    except ValueError as e:
+        raise ValueError(str(e))
+    except HTTPError as e:
+        raise ValueError(f"GOV.UK Content API error: {e.response.status_code} {e.response.reason}")
 
 
 # TODO(jearly): Add icons and/or prompts?

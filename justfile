@@ -1,4 +1,4 @@
-default: fmt lint test
+default: fmt lint test test_int
 
 fmt:
     uv run ruff format .
@@ -18,7 +18,7 @@ run_server:
      uv run src/govuk_search_mcp/__main__.py
 
 run_inspector:
-    npx -y @modelcontextprotocol/inspector --server-url http://localhost:8000/mcp
+    npx -y @modelcontextprotocol/inspector --server-url http://localhost:8000/mcp --transport http
 
 attach_claude:
     claude mcp add --transport http gov-uk-search http://localhost:8000/mcp
